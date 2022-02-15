@@ -1,0 +1,68 @@
+# K8s from thin air
+
+- About
+    - I accidentally created this presentation
+    - I was struggling with Kubernetes
+    - I wanted to setup my tools at home
+        - Ponder
+        - Nolific
+        - Slot machine
+        - I've got Mac, Mini, Pi Zero, Pi 400
+            - Couldn't decide
+            - Needed to containerize
+    - I do a form of "readme driven development"
+    - I wanted to simplify down to the very basics
+        - Is that first principles?
+    - It's simple, not easy
+        - This still ends up being relatively complex
+    - It let me procrastinate on building my cluster
+- Prerequisites
+    - Docker Desktop
+    - Enable K8s in Docker Desktop Settings
+- Create the nostromo directory, this is our pod
+- Create refinery, our first app
+    - Create the refinery.go file
+    - Compile the refinery.go file
+    - Run refinery
+    - Test in local browser
+- Create ore, our second app
+    - Create the ore.go file
+    - Compile the ore.go file
+    - Run ore
+    - Test in local browser
+- Compile for linux in /files
+    - I know I'll run these on linux and go is compiled
+    - GOOS=linux GOARCH=amd64 go build -o files/refinery refinery.go
+    - GOOS=linux GOARCH=amd64 go build -o files/ore ore.go
+- Create chain, our php app
+    - Create the index.php file
+    - Run in dev server
+- Create the refinery Dockerfile
+    - We'll use alpine
+        - That's what Nathan does
+        - It's small
+    - Build the docker image for refinery
+        - Show it in docker desktop
+        - Size is ~14MB
+    - Build the docker container for refinery
+        - Show it in docker desktop
+        - Test it in the browser
+- Create Dockerfile, docker image, and container for ore
+- Create the chain Dockerfile
+    - Create the docker image for chain
+        - Show it in docker desktop
+        - Size is ~19MB
+            - Production server needs nginx/apache
+    - Build the docker container for chain
+        - Show it in docker desktop
+        - Test it in the browser
+- Push the images to docker hub
+    - Create a private repository "nostromo"
+    - docker tag refinery:latest deseretdigital/nostromo:refinery
+    - docker tag ore:latest deseretdigital/nostromo:ore
+    - docker tag chain:latest deseretdigital/nostromo:chain
+    - docker login
+    - docker push deseretdigital/nostromo:refinery
+    - docker push deseretdigital/nostromo:ore
+    - docker push deseretdigital/nostromo:chain
+- Build the K8s deployment

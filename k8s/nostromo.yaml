@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nostromo
+  labels:
+    app: nostromo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nostromo
+  template:
+    metadata:
+      labels:
+        app: nostromo
+    spec:
+      containers:
+      - name: refinery
+        image: deseretdigital/nostromo:refinery
+        ports:
+        - containerPort: 9800
+      - name: ore
+        image: deseretdigital/nostromo:ore
+        ports:
+        - containerPort: 9801
+      - name: chain
+        image: deseretdigital/nostromo:chain
+        ports:
+        - containerPort: 9802
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nostromo-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: nostromo
+  ports:
+    - name: refinery
+      protocol: TCP
+      port: 9800
+      targetPort: 9800 # Unnecessary because it's defaulted to port
+    - name: ore
+      protocol: TCP
+      port: 9801
+      targetPort: 9801 # Unnecessary because it's defaulted to port
+    - name: chain
+      protocol: TCP
+      port: 9802
+      targetPort: 9802 # Unnecessary because it's defaulted to port
