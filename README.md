@@ -1,4 +1,4 @@
-# K8s from thin air
+# K8s From Scratch
 
 - About
     - I accidentally created this presentation
@@ -19,7 +19,7 @@
 - Prerequisites
     - Docker Desktop
     - Enable K8s in Docker Desktop Settings
-- Create the nostromo directory, this is our pod
+- Create the nostromo directory, this is our cluster (deployment)
 - Create refinery, our first app
     - Create the refinery.go file
     - Compile the refinery.go file
