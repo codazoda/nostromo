@@ -1,68 +1,94 @@
 # K8s From Scratch
 
-- About
-    - I accidentally created this presentation
-    - I was struggling with Kubernetes
-    - I wanted to setup my tools at home
-        - Ponder
-        - Nolific
-        - Slot machine
+- Introduction
+    - K8s From Scratch
+        - We'll create three services
+        - We'll dockerize those services
+        - We'll launch those in K8s
+    - About
+        - I accidentally created this presentation
+        - I was struggling with Kubernetes
+        - I wanted to setup my tools at home
         - I've got Mac, Mini, Pi Zero, Pi 400
             - Couldn't decide
             - Needed to containerize
-    - I do a form of "readme driven development"
-    - I wanted to simplify down to the very basics
-        - Is that first principles?
-    - It's simple, not easy
-        - This still ends up being relatively complex
-    - It let me procrastinate on building my cluster
-- Prerequisites
-    - Docker Desktop
-    - Enable K8s in Docker Desktop Settings
+        - I do a form of "readme driven development"
+        - I wanted to simplify down to the very basics
+        - It's simple, not easy
+            - This still ends up being relatively complex
+        - It let me procrastinate on building my own cluster
+    - Prerequisites
+        - Docker Desktop
+        - Enable K8s in Docker Desktop Settings
 - Create the nostromo directory, this is our cluster (deployment)
-- Create refinery, our first app
-    - Create the refinery.go file
-    - Compile the refinery.go file
-    - Run refinery
-    - Test in local browser
-- Create ore, our second app
-    - Create the ore.go file
-    - Compile the ore.go file
-    - Run ore
-    - Test in local browser
-- Compile for linux in /files
-    - I know I'll run these on linux and go is compiled
-    - GOOS=linux GOARCH=amd64 go build -o files/refinery refinery.go
-    - GOOS=linux GOARCH=amd64 go build -o files/ore ore.go
-- Create chain, our php app
+- Create keypad, our first app
+    - This is a PHP app
     - Create the index.php file
-    - Run in dev server
-- Create the refinery Dockerfile
+    - Run with the dev server
+    - Test on port 9801
+- Create clock, our second app
+    - This is a go app
+    - Create the clock.go file
+    - Compile the clock.go file
+    - Run clock
+    - Test on port 9802
+- Compile for Linux
+    - I know I'll run these on linux and go is compiled
+    - Default binaries are for my dev OS
+    - Go can cross compile
+    - GOOS=linux GOARCH=amd64 go build -o files/clock clock.go
+- Create refinery
+    - Also GoLang
+    - Create the refinery.go file
+    - Compile refinery.go
+    - Run locally
+    - Test on port 9800
+    - Cross compile
+- Create the keypad Dockerfile
     - We'll use alpine
-        - That's what Nathan does
+        - I hear that's what Nathan does
         - It's small
-    - Build the docker image for refinery
-        - Show it in docker desktop
-        - Size is ~14MB
-    - Build the docker container for refinery
-        - Show it in docker desktop
-        - Test it in the browser
-- Create Dockerfile, docker image, and container for ore
-- Create the chain Dockerfile
-    - Create the docker image for chain
+        - There's also a base image on GKE
+        - Maybe that's what Nathan really does
+    - Build the docker image for keypad
         - Show it in docker desktop
         - Size is ~19MB
-            - Production server needs nginx/apache
-    - Build the docker container for chain
+            - Don't use built-in in production
+    - Build the docker container for keypad
         - Show it in docker desktop
         - Test it in the browser
+- Create Dockerfile, image, and container for clock
+- Create the Dockerfile, image, and container for refinery
 - Push the images to docker hub
-    - Create a private repository "nostromo"
-    - docker tag refinery:latest deseretdigital/nostromo:refinery
-    - docker tag ore:latest deseretdigital/nostromo:ore
-    - docker tag chain:latest deseretdigital/nostromo:chain
-    - docker login
-    - docker push deseretdigital/nostromo:refinery
-    - docker push deseretdigital/nostromo:ore
-    - docker push deseretdigital/nostromo:chain
-- Build the K8s deployment
+    - docker tag refinery deseretdigital/sms_refinery:latest
+        - Don't use dashes
+        - For bigger org you need a naming strategy
+    - docker login (might be required)
+    - docker push docker push deseretdigital/sms_refinery:latest
+    - Look in docker hub
+- Build keypad K8s
+    - Create the keypad.yaml file
+    - Apply the deployment
+        - kubectl apply -f keypad.yaml
+    - Review in docker desktop
+    - Adjust replicas to 10
+    - Adjust replicas to 1
+- Build clock K8s
+    - Create the clock.yaml file
+    - Apply the deployment
+        - kubectl apply -f clock.yaml
+    - Review in docker desktop
+- Build refinery K8s
+    - Create the refinery.yaml file
+    - Apply the deployment
+        - kubectl apply -f refinery.yaml
+    - Review in docker desktop
+- Build combined K8s
+    - Most services are stand-alone
+    - For very tightly coupled things
+    - Create the nostromo.yaml file
+    - Apply the deployment
+        - kubectl apply -f nostromo.yaml
+    - Review in docker desktop
+    - Adjust replicas to 3
+    - Adjust replicas to 1
