@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keypad
+  labels:
+    app: keypad
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keypad
+  template:
+    metadata:
+      labels:
+        app: keypad
+    spec:
+      containers:
+      - name: keypad
+        image: deseretdigital/nostromo:chain
+        ports:
+        - containerPort: 9801
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keypad-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: keypad
+  ports:
+    - name: keypad
+      protocol: TCP
+      port: 9801
+      targetPort: 9801 # Unnecessary because it's defaulted to port

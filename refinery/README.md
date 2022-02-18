@@ -28,7 +28,7 @@ docker run \
     /refinery
 ```
 
-## Create and start an image based off the published container
+## Create and start an image based off the published container (or local if we have it)
 
 ```
 docker run \
@@ -36,6 +36,6 @@ docker run \
     --publish "9800:9800" \
     --name refinery \
     --detach \
-    deseretdigital/nostromo:refinery \
+    deseretdigital/sms_refinery \
     /refinery
 ```
